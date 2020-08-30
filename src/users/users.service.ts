@@ -13,6 +13,10 @@ export class UsersService {
     private _usersRepository: Repository<User>
   ) {}
 
+  hashPassword(password: string): string {
+    return createHash('sha512').update(password).digest('hex');
+  }
+
   findId(id: number): Promise<User | undefined > {
     return this._usersRepository.findOne({ id });
   }
@@ -22,7 +26,10 @@ export class UsersService {
   }
 
   findByAuth(username: string, password: string): Promise<User | undefined> {
-    return this._usersRepository.findOne({ username, password });
+    return this._usersRepository.findOne({
+      username,
+      password: this.hashPassword(password)
+    });
   }
 
   async create(username: string, password: string, email: string): Promise<string> {
@@ -40,7 +47,7 @@ export class UsersService {
 
     const user = new User();
     user.username = username;
-    user.password = createHash('sha512').update(password).digest('hex');
+    user.password = this.hashPassword(password);
     user.email = email;
     user.joinDate = (new Date()).getTime();
     user.lastDate = (new Date()).getTime();
