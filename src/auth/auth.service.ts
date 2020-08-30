@@ -14,9 +14,8 @@ export class AuthService {
     return await this._usersService.findByAuth(login, password);
   }
 
-  async login(user: User) {
+  async login(user: any) {
     const payload = {
-      id: user.id,
       username: user.username
     };
     return {

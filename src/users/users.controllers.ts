@@ -10,7 +10,9 @@ import { CreateUserDto } from './dto/create-user.dto';
 
 @Controller('users')
 export class UsersControllers {
-  constructor(private readonly _userService: UsersService) {}
+  constructor(
+    private readonly _userService: UsersService,
+  ) {}
 
   @Post()
   async createUser(@Body() createUserDto: CreateUserDto) {
@@ -23,8 +25,7 @@ export class UsersControllers {
     }
 
     return {
-      'access_token': '',
-      'refresh_token': ''
+      'username': createUserDto.username
     }
   }
 }
