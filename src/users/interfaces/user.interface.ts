@@ -3,5 +3,6 @@ export interface IUser {
   username: string,
   password: string,
   email: string,
-  joinDate: number
+  joinDate: number,
+  lastDate: number
 }

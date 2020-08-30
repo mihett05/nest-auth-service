@@ -2,7 +2,7 @@ import {
   Controller,
   Post,
   Body,
-  HttpCode
+  HttpException, HttpStatus,
 } from '@nestjs/common';
 
 import { UsersService } from './users.service';
@@ -13,11 +13,18 @@ export class UsersControllers {
   constructor(private readonly _userService: UsersService) {}
 
   @Post()
-  @HttpCode(204)
   async createUser(@Body() createUserDto: CreateUserDto) {
     const status = await this._userService.create(
       createUserDto.username, createUserDto.password, createUserDto.email
     );
 
+    if (status) {
+      throw new HttpException(status, HttpStatus.BAD_REQUEST);
+    }
+
+    return {
+      'access_token': '',
+      'refresh_token': ''
+    }
   }
 }

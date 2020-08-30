@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 
 import { createHash } from 'crypto';
 
-import { User } from './user.entity';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
@@ -29,13 +29,13 @@ export class UsersService {
     const userWithUsername = await this.findOne(username);
 
     if (userWithUsername) {
-      return "login already is used";
+      return "login unavailable";
     }
 
     const userWithEmail = await this._usersRepository.findOne({ email });
 
     if (userWithEmail) {
-      return "email already is used";
+      return "email unavailable";
     }
 
     const user = new User();
@@ -44,6 +44,8 @@ export class UsersService {
     user.email = email;
     user.joinDate = (new Date()).getTime();
     user.lastDate = (new Date()).getTime();
+
+    await this._usersRepository.save([user]);
 
     return "";
   }

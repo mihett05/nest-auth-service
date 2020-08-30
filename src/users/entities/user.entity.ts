@@ -1,19 +1,19 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-import { IUser } from './user.interface';
+import { IUser } from '../interfaces/user.interface';
 
-@Entity()
+@Entity('user')
 export class User implements IUser {
   @PrimaryGeneratedColumn()
   id: number
 
-  @Column()
+  @Column({ unique: true })
   username: string
 
   @Column()
   password: string
 
-  @Column()
+  @Column({ unique: true })
   email: string
 
   @Column()
